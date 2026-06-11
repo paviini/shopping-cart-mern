@@ -1,9 +1,15 @@
 function Footer() {
   return (
-    <footer>
+    <footer className="site-footer">
       <hr />
-
-      <p>© 2026 Shopping Cart Application</p>
+      <div className="footer-inner">
+        <p>© {new Date().getFullYear()} Shopping Cart</p>
+        <div className="footer-links">
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy</a>
+        </div>
+      </div>
     </footer>
   );
 }

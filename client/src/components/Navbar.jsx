@@ -15,12 +15,7 @@ function Navbar() {
   };
 
   return (
-    <nav
-      style={{
-        padding: "10px",
-        borderBottom: "1px solid gray",
-      }}
-    >
+    <nav className="site-nav">
       <h2>🛒 Shopping Cart</h2>
 
       <Link to="/">Home</Link> |{" "}
@@ -66,6 +61,17 @@ function Navbar() {
           </Link>
         </>
       )}
+      {
+        userInfo?.photo && (
+          <img
+            src={userInfo.photo}
+            alt=""
+            width="40"
+            height="40"
+          />
+   
+        )
+      }
     </nav>
   );
 }

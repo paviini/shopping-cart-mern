@@ -16,11 +16,13 @@ const productRoutes = require("./routes/productRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const googleAuthRoutes =require("./routes/googleAuthRoutes");
 // Route Middleware
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/auth/google", googleAuthRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

@@ -1,12 +1,14 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
+import CartItem from "../components/CartItem";
 
 function Cart() {
 
   const {
     cart,
-    removeFromCart
+    removeFromCart,
+    updateCartQuantity
   } = useContext(CartContext);
 
   const totalPrice = cart.reduce(
@@ -16,51 +18,40 @@ function Cart() {
   );
 
   return (
-    <div>
-
+    <div className="cart-page">
       <h1>My Cart</h1>
 
-      {cart.length === 0 && (
-        <h3>Cart is Empty</h3>
-      )}
-
-      {cart.map(item => (
-
-        <div
-          key={item._id}
-          style={{
-            border: "1px solid gray",
-            margin: "10px",
-            padding: "10px"
-          }}
-        >
-          <h3>{item.name}</h3>
-
-          <p>Price: Rs. {item.price}</p>
-
-          <p>Quantity: {item.quantity}</p>
-
-          <button
-            onClick={() =>
-              removeFromCart(item._id)
-            }
-          >
-            Remove
-          </button>
-
+      {cart.length === 0 ? (
+        <div className="empty-state">
+          <h3>Your cart is empty</h3>
+          <p>
+            Looks like you haven't added anything yet. <Link to="/products">Shop products</Link> to get started.
+          </p>
         </div>
+      ) : (
+        <div className="cart-container">
+          <div className="cart-list">
+            {cart.map(item => (
+              <CartItem
+                key={item._id}
+                item={item}
+                onRemove={removeFromCart}
+                onQuantityChange={updateCartQuantity}
+              />
+            ))}
+          </div>
 
-      ))}
+          <aside className="cart-summary">
+            <h2>Order Summary</h2>
+            <p className="summary-line"><strong>Items:</strong> {cart.length}</p>
+            <p className="summary-line"><strong>Total:</strong> Rs. {totalPrice}</p>
 
-      <hr />
-
-      <h2>Total: Rs. {totalPrice}</h2>
-
-      <Link to="/checkout">
-        <button>
-          Proceed to Checkout
-        </button>
-      </Link>
+            <Link to="/checkout">
+              <button className="checkout-btn">Proceed to Checkout</button>
+            </Link>
+          </aside>
+        </div>
+      )}
 
     </div>
   );

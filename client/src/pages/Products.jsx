@@ -57,15 +57,17 @@ function Products() {
         </div>
       )}
 
-      {!loading && !error && products.map(product => (
-
-        <ProductCard
-          key={product._id}
-          product={product}
-          addToCart={addToCart}
-        />
-
-      ))}
+      {!loading && !error && products.length > 0 && (
+        <div className="product-grid">
+          {products.map(product => (
+            <ProductCard
+              key={product._id}
+              product={product}
+              addToCart={addToCart}
+            />
+          ))}
+        </div>
+      )}
 
     </div>
   );

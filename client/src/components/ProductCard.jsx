@@ -1,25 +1,21 @@
 function ProductCard({ product, addToCart }) {
+  const img = product.image || "https://via.placeholder.com/320x200?text=Product";
 
   return (
-    <div
-      style={{
-        border: "1px solid gray",
-        padding: "10px",
-        margin: "10px"
-      }}
-    >
-      <h3>{product.name}</h3>
+    <article className="product-card">
+      <div className="product-media">
+        <img src={img} alt={product.name} />
+      </div>
 
-      <p>{product.description}</p>
-
-      <h4>Rs. {product.price}</h4>
-
-      <button
-        onClick={() => addToCart(product)}
-      >
-        Add To Cart
-      </button>
-    </div>
+      <div className="product-body">
+        <h3 className="product-title">{product.name}</h3>
+        <p className="product-desc">{product.description}</p>
+        <div className="product-meta">
+          <strong className="product-price">Rs. {product.price}</strong>
+          <button className="product-add" onClick={() => addToCart(product)}>Add to cart</button>
+        </div>
+      </div>
+    </article>
   );
 }
 

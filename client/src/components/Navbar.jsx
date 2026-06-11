@@ -21,13 +21,18 @@ function Navbar() {
       <Link to="/">Home</Link> |{" "}
       <Link to="/products">Products</Link> |{" "}
       <Link to="/cart">
-        Cart ({cart.length})
-      </Link>{" "}
-      |{" "}
-      <Link to="/admin">
-        Admin
-      </Link>{" "}
-      |{" "}
+        Cart 
+      </Link>
+      
+
+       {userInfo?.isAdmin && (
+        <>
+          {" | "}
+          <Link to="/admin">
+            Admin Panel
+          </Link>
+        </>
+      )}
 
       {userInfo ? (
         <>

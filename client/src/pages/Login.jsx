@@ -11,13 +11,33 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);  // Validation function
+  const validate = () => {
+    const newErrors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
+    if (!validate()) return;
 
     try {
       const res = await API.post("/auth/login", {
@@ -25,19 +45,12 @@ function Login() {
         password,
       });
 
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify(res.data)
-      );
+      localStorage.setItem("userInfo", JSON.stringify(res.data));
 
       alert("Login Successful");
-
       navigate("/");
     } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Login Failed"
-      );
+      alert(error.response?.data?.message || "Login Failed");
     }
   };
 
@@ -70,31 +83,9 @@ function Login() {
         <div className="auth-visual auth-visual--login">
           <div className="auth-visual-overlay" />
           <img src={heroImg} alt="Groceries and shopping essentials" />
-
-          <div className="auth-visual-copy">
-            <span className="auth-badge">Welcome back</span>
-            <h2>Pick up right where you left off</h2>
-            <p>
-              Sign in to access your cart, checkout faster, and review orders.
-            </p>
-
-            <div className="auth-points">
-              <span>Fast access</span>
-              <span>Saved cart</span>
-              <span>Order tracking</span>
-            </div>
-          </div>
         </div>
 
         <div className="auth-panel">
-          <div className="auth-header">
-            <span className="auth-eyebrow">Sign in</span>
-            <h1>Login</h1>
-            <p>
-              Good to see you again. Enter your details to continue shopping.
-            </p>
-          </div>
-
           <form className="auth-form" onSubmit={submitHandler}>
             <label>
               Email address
@@ -104,17 +95,34 @@ function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && (
+                <span className="error-text">{errors.email}</span>
+              )}
             </label>
 
             <label>
               Password
-              <input
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
+              <div className="password-field">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+            </div>
+
+            {errors.password && (
+              <span className="error-text">{errors.password}</span>
+            )}
+          </label>
 
             <button className="auth-primary-btn" type="submit">
               Login

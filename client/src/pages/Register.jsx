@@ -11,14 +11,62 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!name.trim()) {
+      newErrors.name = "Full name is required";
+    } else if (name.trim().length < 3) {
+      newErrors.name =
+        "Full name must be at least 3 characters";
+    }
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email =
+        "Please enter a valid email address";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password =
+        "Password must be at least 8 characters";
+    } else if (
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)
+    ) {
+      newErrors.password =
+        "Password must contain uppercase, lowercase, and a number";
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword =
+        "Please confirm your password";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword =
+        "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
+    if (!validate()) return;
 
     try {
       const res = await API.post("/auth/register", {
@@ -45,7 +93,12 @@ function Register() {
   const googleRegister = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
+
+      const result = await signInWithPopup(
+        auth,
+        provider
+      );
+
       const user = result.user;
 
       localStorage.setItem(
@@ -72,13 +125,22 @@ function Register() {
       <section className="auth-card">
         <div className="auth-visual auth-visual--register">
           <div className="auth-visual-overlay" />
-          <img src={heroImg} alt="Fresh groceries and a shopping basket" />
+
+          <img
+            src={heroImg}
+            alt="Fresh groceries and a shopping basket"
+          />
 
           <div className="auth-visual-copy">
-            <span className="auth-badge">Join the store</span>
+            <span className="auth-badge">
+              Join the store
+            </span>
+
             <h2>Set up your account in a minute</h2>
+
             <p>
-              Save favorites, track orders, and shop faster on every visit.
+              Save favorites, track orders, and shop
+              faster on every visit.
             </p>
 
             <div className="auth-points">
@@ -91,45 +153,144 @@ function Register() {
 
         <div className="auth-panel">
           <div className="auth-header">
-            <span className="auth-eyebrow">Create account</span>
+            <span className="auth-eyebrow">
+              Create account
+            </span>
+
             <h1>Register</h1>
+
             <p>
-              Start shopping with a clean dashboard and faster checkout.
+              Start shopping with a clean dashboard
+              and faster checkout.
             </p>
           </div>
 
-          <form className="auth-form" onSubmit={submitHandler}>
+          <form
+            className="auth-form"
+            onSubmit={submitHandler}
+          >
+            {/* Full Name */}
             <label>
-              Full name
+              Full Name
               <input
                 type="text"
-                placeholder="Enter your name"
+                placeholder="Enter your full name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
               />
+
+              {errors.name && (
+                <span className="error-text">
+                  {errors.name}
+                </span>
+              )}
             </label>
 
+            {/* Email */}
             <label>
-              Email address
+              Email Address
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
               />
+
+              {errors.email && (
+                <span className="error-text">
+                  {errors.email}
+                </span>
+              )}
             </label>
 
+            {/* Password */}
             <label>
               Password
-              <input
-                type="password"
-                placeholder="Create a password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+
+              <div className="password-field">
+                <input
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
+                  placeholder="Create a password"
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
+                />
+
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() =>
+                    setShowPassword(
+                      !showPassword
+                    )
+                  }
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
+
+              {errors.password && (
+                <span className="error-text">
+                  {errors.password}
+                </span>
+              )}
             </label>
 
-            <button className="auth-primary-btn" type="submit">
+            {/* Confirm Password */}
+            <label>
+              Confirm Password
+
+              <div className="password-field">
+                <input
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) =>
+                    setConfirmPassword(
+                      e.target.value
+                    )
+                  }
+                />
+
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                >
+                  {showConfirmPassword
+                    ? "🙈"
+                    : "👁️"}
+                </button>
+              </div>
+
+              {errors.confirmPassword && (
+                <span className="error-text">
+                  {errors.confirmPassword}
+                </span>
+              )}
+            </label>
+
+            <button
+              className="auth-primary-btn"
+              type="submit"
+            >
               Register
             </button>
 
@@ -146,7 +307,8 @@ function Register() {
             </button>
 
             <p className="auth-switch">
-              Already have an account? <Link to="/login">Log in</Link>
+              Already have an account?{" "}
+              <Link to="/login">Log in</Link>
             </p>
           </form>
         </div>

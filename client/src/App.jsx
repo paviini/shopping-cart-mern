@@ -21,6 +21,7 @@ import AdminRoute from "./components/AdminRoute";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import OrderHistory from "./pages/OrderHistory";
+import AdminOrders from "./pages/AdminOrders";
 function App() {
   return (
     <BrowserRouter>
@@ -42,6 +43,7 @@ function App() {
           <Route path="/admin/products"element={<AdminRoute><AdminProducts /></AdminRoute>}/>
           <Route path="/admin/categories" element={<AdminRoute><AdminCategories /></AdminRoute>} />
           <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+          <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
         </Routes>
       </main>
     </BrowserRouter>

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import heroImg from "../assets/hero.png";
 import fruitsImg from "../assets/fruits.jpg";
@@ -26,9 +24,7 @@ function Home() {
 
   return (
     <div className="home-page">
-      <Navbar />
-
-      <main className="hero">
+      <section className="hero">
         <div className="hero-inner">
           <div className="hero-copy">
             <h1>Fresh groceries delivered to your door</h1>
@@ -45,7 +41,7 @@ function Home() {
             <img src={heroImg} alt="hero" />
           </div>
         </div>
-      </main>
+      </section>
 
       <section className="section categories">
         <h2>Popular Categories</h2>
@@ -82,8 +78,6 @@ function Home() {
           ))}
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../services/api";
-
+import "../styles/Admindashboard.css";
+import "../App.css";
 function Profile() {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
@@ -55,24 +56,105 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSaving(true);
-    setMessage("");
 
-    try {
-      const res = await API.put("/users/profile", form);
-      const updatedUser = {
-        ...userInfo,
-        ...res.data,
-      };
+  setMessage("");
 
-      localStorage.setItem("userInfo", JSON.stringify(updatedUser));
-      setMessage("Profile saved successfully.");
-    } catch (error) {
-      setMessage(error.response?.data?.message || "Unable to save profile.");
-    } finally {
-      setSaving(false);
-    }
-  };
+  // Name Validation
+  if (!form.name.trim()) {
+    setMessage("Name is required");
+    return;
+  }
+
+  if (!/^[A-Za-z\s]+$/.test(form.name)) {
+    setMessage("Name can only contain letters");
+    return;
+  }
+
+  // Phone Validation
+  if (!form.phone.trim()) {
+    setMessage("Phone number is required");
+    return;
+  }
+
+  if (!/^\d{10}$/.test(form.phone)) {
+    setMessage("Phone number must be 10 digits");
+    return;
+  }
+
+  // Telephone Validation (optional)
+  if (
+    form.telephone &&
+    !/^\d{10}$/.test(form.telephone)
+  ) {
+    setMessage(
+      "Telephone number must be 10 digits"
+    );
+    return;
+  }
+
+  // Gender Validation
+  if (!form.gender) {
+    setMessage("Please select gender");
+    return;
+  }
+
+  // City Validation
+  if (!form.city.trim()) {
+    setMessage("City is required");
+    return;
+  }
+
+  // Address Validation
+  if (!form.address.trim()) {
+    setMessage("Address is required");
+    return;
+  }
+
+  // Bio Validation
+  if (form.bio.length > 200) {
+    setMessage(
+      "Bio cannot exceed 200 characters"
+    );
+    return;
+  }
+
+  setSaving(true);
+
+  try {
+
+    const res = await API.put(
+      "/users/profile",
+      form
+    );
+
+    const updatedUser = {
+      ...userInfo,
+      ...res.data,
+    };
+
+    localStorage.setItem(
+      "userInfo",
+      JSON.stringify(updatedUser)
+    );
+
+    setMessage(
+      "✅ Profile saved successfully"
+    );
+
+  } catch (error) {
+
+    setMessage(
+      error.response?.data?.message ||
+      "Unable to save profile."
+    );
+
+  } finally {
+
+    setSaving(false);
+
+  }
+};
+
 
   if (!userInfo?.token) {
     return (
@@ -92,7 +174,7 @@ function Profile() {
       <section className="profile-shell">
         <aside className="profile-card profile-card--summary">
           <span className="profile-badge">Account</span>
-          <h1>My Profile</h1>
+          <h2>My Profile</h2>
           <p className="profile-summary">Keep your contact details, gender, and address current so your account stays complete.</p>
 
           <div className="profile-summary-list">
@@ -118,7 +200,7 @@ function Profile() {
             <form className="profile-form" onSubmit={handleSubmit}>
               <label>
                 Full name
-                <input name="name" value={form.name} onChange={handleChange} />
+                <input name="name" value={form.name} onChange={handleChange} maxLength="20"/>
               </label>
 
               <label>
@@ -128,12 +210,12 @@ function Profile() {
 
               <label>
                 Phone
-                <input name="phone" value={form.phone} onChange={handleChange} placeholder="Enter phone number" />
+                <input name="phone" value={form.phone} onChange={handleChange} maxLength="10" placeholder="0712345678" />
               </label>
 
               <label>
                 Telephone
-                <input name="telephone" value={form.telephone} onChange={handleChange} placeholder="Enter telephone number" />
+                <input name="telephone" value={form.telephone} onChange={handleChange} maxLength="10" placeholder="0112345678" />
               </label>
 
               <label>
@@ -149,21 +231,32 @@ function Profile() {
 
               <label>
                 City
-                <input name="city" value={form.city} onChange={handleChange} placeholder="Enter city" />
+                <input name="city" value={form.city} onChange={handleChange} maxLength="20" placeholder="Enter city" />
               </label>
 
               <label className="profile-form--wide">
                 Address
-                <textarea name="address" value={form.address} onChange={handleChange} placeholder="Enter your address" rows="3" />
+                <textarea name="address" value={form.address} onChange={handleChange} rows="3" maxLength="200" />
               </label>
 
               <label className="profile-form--wide">
                 Bio
-                <textarea name="bio" value={form.bio} onChange={handleChange} placeholder="Write a short bio" rows="4" />
+                <textarea name="bio" value={form.bio} onChange={handleChange} placeholder="Write a short bio" rows="4" maxLength="200" />
               </label>
-
-              {message && <p className="profile-message">{message}</p>}
-
+              <p>
+                {form.bio.length}/200 Characters
+              </p>
+              {message && (
+                <p
+                  className={
+                    message.includes("successfully")
+                      ? "success-message"
+                      : "error-message"
+                  }
+                >
+                  {message}
+                </p>
+            )}
               <div className="profile-actions">
                 <button type="submit" className="profile-save-btn" disabled={saving}>
                   {saving ? "Saving..." : "Save profile"}

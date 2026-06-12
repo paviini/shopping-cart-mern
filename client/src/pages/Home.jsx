@@ -3,6 +3,9 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import heroImg from "../assets/hero.png";
+import fruitsImg from "../assets/fruits.jpg";
+import vegetablesImg from "../assets/vegetables.jpg";
+import bakeryImg from "../assets/bakery.jpg";
 
 const sampleProducts = [
   { id: 1, name: "Fresh Apples", description: "Crisp and juicy", price: 120 },
@@ -48,18 +51,24 @@ function Home() {
         <h2>Popular Categories</h2>
         <div className="categories-grid">
           <div className="card">
-            <img src="https://www.google.com/imgres?q=fruits%20pictures%20with%20small%20url&imgurl=https%3A%2F%2Fstatic.vecteezy.
-            com%2Fsystem%2Fresources%2Fthumbnails%2F015%2F606%2F657%2Fsmall%2Fcollage-of-fruits-photo.jpg&imgrefurl=https%3A%2F%2Fwww.vecteezy.
-            com%2Ffree-photos%2Ffruit&docid=WddE4LQ7smwaYM&tbnid=NuajqSiumVAlsM&vet=12ahUKEwj6l7OHmv-UAxUhSGwGHXJHBUwQnPAOegQIHRAB.
-            .i&w=392&h=350&hcb=2&ved=2ahUKEwj6l7OHmv-UAxUhSGwGHXJHBUwQnPAOegQIHRAB" />
+            <img
+               src="https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800&q=80&auto=format&fit=crop"
+               alt="fruits"
+            />
             <h3>Fruits</h3>
           </div>
           <div className="card">
-            <img src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=800&q=60&auto=format&fit=crop" alt="vegetables" />
+            <img
+              src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=800&q=80&auto=format&fit=crop"
+              alt="vegetables"
+            />
             <h3>Vegetables</h3>
           </div>
           <div className="card">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=60&auto=format&fit=crop" alt="bakery" />
+            <img
+              src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80&auto=format&fit=crop"
+              alt="bakery"
+            />
             <h3>Bakery</h3>
           </div>
         </div>

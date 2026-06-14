@@ -3,21 +3,20 @@ import { createContext, useState } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
     setCart((currentCart) => {
       const existingItem = currentCart.find(
-        item => item._id === product._id
+        (item) => item._id === product._id
       );
 
       if (existingItem) {
-        return currentCart.map(item =>
+        return currentCart.map((item) =>
           item._id === product._id
             ? {
                 ...item,
-                quantity: item.quantity + 1
+                quantity: item.quantity + 1,
               }
             : item
         );
@@ -27,32 +26,29 @@ export const CartProvider = ({ children }) => {
         ...currentCart,
         {
           ...product,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ];
     });
+
+    alert(`${product.name} added to cart!`);
   };
 
   const removeFromCart = (id) => {
     setCart((currentCart) =>
-      currentCart.filter(item => item._id !== id)
+      currentCart.filter((item) => item._id !== id)
     );
   };
 
   const updateCartQuantity = (id, quantity) => {
     const nextQuantity = Number(quantity);
 
-    if (Number.isNaN(nextQuantity) || nextQuantity < 1) {
-      return;
-    }
+    if (Number.isNaN(nextQuantity) || nextQuantity < 1) return;
 
     setCart((currentCart) =>
-      currentCart.map(item =>
+      currentCart.map((item) =>
         item._id === id
-          ? {
-              ...item,
-              quantity: nextQuantity
-            }
+          ? { ...item, quantity: nextQuantity }
           : item
       )
     );
@@ -64,7 +60,7 @@ export const CartProvider = ({ children }) => {
         cart,
         addToCart,
         removeFromCart,
-        updateCartQuantity
+        updateCartQuantity,
       }}
     >
       {children}

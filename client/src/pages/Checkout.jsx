@@ -40,7 +40,7 @@ function Checkout() {
 
   return (
     <div>
-
+      <br></br>
       <h1>Checkout</h1>
 
       <h3>Total: Rs. {total}</h3>

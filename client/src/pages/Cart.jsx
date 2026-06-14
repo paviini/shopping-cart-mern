@@ -18,7 +18,7 @@ function Cart() {
   );
 
   return (
-    <div className="cart-page">
+    <div className="cart-page"><br></br>
       <h1>My Cart</h1>
 
       {cart.length === 0 ? (

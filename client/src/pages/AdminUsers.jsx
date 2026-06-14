@@ -25,7 +25,7 @@ function AdminUsers() {
     <div className="admin-users-page">
       <div className="admin-page-header">
         <span className="admin-page-eyebrow">Registered users</span>
-        <h1>User Management</h1>
+        <h1>User Management</h1><br></br>
         <p>View the details saved by registered users. This view is read-only.</p>
       </div>
 

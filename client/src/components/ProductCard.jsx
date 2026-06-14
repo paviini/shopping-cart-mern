@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 function ProductCard({ product, addToCart }) {
 
   const img =
@@ -25,7 +26,13 @@ function ProductCard({ product, addToCart }) {
           <strong>Rs. {product.price}</strong>
 
           <button
-            onClick={() => addToCart(product)}
+            onClick={() => {
+              addToCart(product);
+              toast.success("✅ Product added successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+              });
+            }}
           >
             Add to Cart
           </button>

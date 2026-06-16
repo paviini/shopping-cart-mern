@@ -1242,3 +1242,32 @@ a:focus-visible {
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,.1);
 }
+
+.site-footer {
+  margin-top: 0px;
+  background: #4a1f6e;
+  color: white;
+  padding: 20px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: #4ade80;
+}
